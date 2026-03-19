@@ -1,0 +1,93 @@
+{
+  "returns": [
+    {
+      "ticker": "AAPL",
+      "cumulative_return": 8.151010369640096,
+      "annual_return": 0.21918923399958068,
+      "daily_return_std": 0.018144917642984766
+    },
+    {
+      "ticker": "AMZN",
+      "cumulative_return": 12.764748583537726,
+      "annual_return": 0.2645704296080753,
+      "daily_return_std": 0.0207213030989724
+    },
+    {
+      "ticker": "GOOGL",
+      "cumulative_return": 10.553961017836517,
+      "annual_return": 0.24490474712045973,
+      "daily_return_std": 0.018101048794965612
+    },
+    {
+      "ticker": "MSFT",
+      "cumulative_return": 7.551112499064809,
+      "annual_return": 0.2118114795122712,
+      "daily_return_std": 0.017049351991646734
+    }
+  ],
+  "risk_metrics": [
+    {
+      "ticker": "AAPL",
+      "volatility": 0.28804163785851583,
+      "sharpe_ratio": 0.6898597648284326,
+      "value_at_risk": -0.02729863733837367,
+      "risk_free_rate_used": 0.040975000000000004,
+      "avg_inflation_yoy": 0.027295236660659156,
+      "real_annual_return_approx": 0.2123880998932131
+    },
+    {
+      "ticker": "AMZN",
+      "volatility": 0.32894048904643797,
+      "sharpe_ratio": 0.7529677026319143,
+      "value_at_risk": -0.030624580232459106,
+      "risk_free_rate_used": 0.040975000000000004,
+      "avg_inflation_yoy": 0.027295236660659156,
+      "real_annual_return_approx": 0.26136132767925563
+    },
+    {
+      "ticker": "GOOGL",
+      "volatility": 0.2873452414855464,
+      "sharpe_ratio": 0.7633150746486603,
+      "value_at_risk": -0.02660567649488427,
+      "risk_free_rate_used": 0.040975000000000004,
+      "avg_inflation_yoy": 0.027295236660659156,
+      "real_annual_return_approx": 0.23301471779381802
+    },
+    {
+      "ticker": "MSFT",
+      "volatility": 0.2706500723082062,
+      "sharpe_ratio": 0.6939398645259444,
+      "value_at_risk": -0.02629111442060817,
+      "risk_free_rate_used": 0.040975000000000004,
+      "avg_inflation_yoy": 0.027295236660659156,
+      "real_annual_return_approx": 0.2014946378508345
+    }
+  ],
+  "macro_rows": 3062,
+  "correlations": {
+    "AAPL": {
+      "AAPL": 1.0,
+      "AMZN": 0.9149,
+      "GOOGL": 0.9359,
+      "MSFT": 0.9768
+    },
+    "AMZN": {
+      "AAPL": 0.9149,
+      "AMZN": 1.0,
+      "GOOGL": 0.8926,
+      "MSFT": 0.9368
+    },
+    "GOOGL": {
+      "AAPL": 0.9359,
+      "AMZN": 0.8926,
+      "GOOGL": 1.0,
+      "MSFT": 0.9221
+    },
+    "MSFT": {
+      "AAPL": 0.9768,
+      "AMZN": 0.9368,
+      "GOOGL": 0.9221,
+      "MSFT": 1.0
+    }
+  }
+}

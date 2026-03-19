@@ -1,0 +1,10 @@
+pandas
+numpy
+requests
+sqlalchemy
+matplotlib
+yfinance
+fredapi
+reportlab
+jinja2
+pytest

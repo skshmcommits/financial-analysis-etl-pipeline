@@ -1,0 +1,401 @@
+Below is a **structured, implementation-level specification** you can give to a coding agent (Copilot/Cursor/Code Interpreter/etc.).  
+It is written like a **technical design document** so the bot can implement modules systematically.
+---
+# Project Specification  
+## Automated Financial Research Data Pipeline
+### Project Goal
+Build an **end-to-end Python system** that:
+1. Extracts financial market data from APIs
+2. Cleans and validates the data
+3. Stores the processed data in a SQL database
+4. Computes financial analytics
+5. Generates automated research reports
+6. Provides a **CLI tool** to run the pipeline
+The project should simulate **real-world financial research infrastructure used in banks and quant teams**.
+---
+# 1. Tech Stack
+### Programming
+Python 3.11+
+### Core libraries
+- pandas
+- numpy
+- requests
+- sqlalchemy
+- matplotlib or plotly
+### Optional but recommended
+- yfinance (market data)
+- fredapi (economic data)
+- typer or argparse (CLI)
+- jinja2 (report templates)
+- reportlab or pdfkit (PDF generation)
+### Database
+SQLite initially (simple)
+PostgreSQL optional later
+---
+# 2. Project Directory Structure
+financial_research_pipeline/
+config/
+    settings.py
+data_ingestion/
+    fetch_market_data.py
+    fetch_macro_data.py
+data_processing/
+    clean_market_data.py
+    validation.py
+    feature_engineering.py
+database/
+    db_connection.py
+    load_data.py
+    queries.py
+analytics/
+    returns.py
+    risk_metrics.py
+    correlations.py
+
+
+reporting/
+    charts.py
+    report_generator.py
+cli/
+    pipeline_cli.py
+tests/
+main.py
+requirements.txt
+README.md
+---
+# 3. Configuration Module
+### File
+config/settings.py
+### Purpose
+Centralized configuration for:
+- tickers
+- API parameters
+- database path
+- report settings
+### Example
+TICKERS = ["AAPL","MSFT","GOOGL","AMZN","SPY"]
+START_DATE = "2015-01-01"
+DATABASE_URL = "sqlite:///financial_data.db"
+REPORT_OUTPUT_DIR = "reports/"
+---
+# 4. Data Ingestion Layer
+## Objective
+Extract raw data from external APIs.
+---
+## Module 1: Market Data Fetcher
+### File
+data_ingestion/fetch_market_data.py
+### Functionality
+Fetch historical price data.
+### Source
+Use **Yahoo Finance API via yfinance**
+### Fields to collect
+date
+ticker
+open
+high
+low
+close
+adjusted_close
+volume
+### Function
+fetch_market_data(ticker, start_date)
+
+
+Returns:
+pandas DataFrame
+### Steps
+1. Download historical prices
+2. Add ticker column
+3. Reset index
+4. Standardize column names
+5. Return dataframe
+---
+## Module 2: Macro Data Fetcher
+### File
+data_ingestion/fetch_macro_data.py
+### Data sources
+FRED economic data.
+Example indicators:
+CPI
+GDP
+Interest rates
+Unemployment
+### Function
+fetch_macro_series(series_id)
+Returns dataframe:
+date
+indicator
+value
+---
+# 5. Data Cleaning and Processing
+Location
+data_processing/
+---
+## Module 1: Market Data Cleaning
+File
+clean_market_data.py
+### Tasks
+1. Convert date to datetime
+2. Sort by ticker + date
+3. Remove duplicates
+4. Handle missing values
+5. Ensure numeric columns
+### Function
+clean_market_data(df)
+---
+## Module 2: Data Validation
+
+
+File
+validation.py
+### Checks
+- Missing values
+- Negative prices
+- Extreme outliers
+- Duplicate rows
+### Function
+validate_market_data(df)
+Return
+validation_report dictionary
+Example output
+{
+missing_values: 3
+duplicates: 0
+negative_prices: 0
+}
+---
+## Module 3: Feature Engineering
+File
+feature_engineering.py
+Create additional financial features.
+### Features to compute
+Daily return
+return = close.pct_change()
+Log return
+log_return = log(close/close.shift(1))
+Moving averages
+MA20
+MA50
+MA200
+Rolling volatility
+30 day std dev
+Function
+create_features(df)
+---
+# 6. Database Layer
+Location
+database/
+---
+## Module 1: Database Connection
+
+
+File
+db_connection.py
+### Purpose
+Create SQLAlchemy engine.
+Function
+get_engine()
+---
+## Module 2: Load Data
+File
+load_data.py
+### Tables
+market_prices
+Columns
+date
+ticker
+open
+high
+low
+close
+volume
+return
+log_return
+MA20
+MA50
+volatility
+Function
+load_market_data(df)
+Uses
+df.to_sql()
+---
+## Module 3: Query Layer
+File
+queries.py
+Example functions
+get_prices(ticker)
+get_returns(ticker)
+get_latest_data()
+---
+# 7. Analytics Layer
+Location
+analytics/
+---
+## Module 1: Returns Analysis
+
+
+File
+returns.py
+Compute:
+cumulative return
+annual return
+daily return distribution
+Function
+compute_returns(df)
+---
+## Module 2: Risk Metrics
+File
+risk_metrics.py
+Metrics
+### Volatility
+std(returns)*sqrt(252)
+### Sharpe Ratio
+(mean_return - risk_free_rate) / volatility
+### Value at Risk
+percentile method
+Function
+compute_risk_metrics(df)
+---
+## Module 3: Correlation Analysis
+File
+correlations.py
+Compute correlation matrix between assets.
+Function
+compute_correlation_matrix(price_df)
+---
+# 8. Visualization Layer
+Location
+reporting/charts.py
+Generate charts.
+### Charts to implement
+1. Price time series
+2. Moving average chart
+3. Return distribution histogram
+4. Correlation heatmap
+5. Volatility chart
+Functions
+
+
+plot_price_series()
+plot_returns_distribution()
+plot_correlation_heatmap()
+Save images.
+---
+# 9. Automated Research Report Generator
+Location
+reporting/report_generator.py
+---
+## Goal
+Generate a **PDF research report** automatically.
+### Report sections
+1. Market overview
+2. Price trends
+3. Risk metrics
+4. Correlation analysis
+5. Key statistics table
+---
+### Steps
+1. Run analytics modules
+2. Generate charts
+3. Build HTML report
+4. Convert HTML → PDF
+Libraries
+jinja2
+pdfkit
+Function
+generate_report(data, analytics_results)
+Output
+reports/research_report.pdf
+---
+# 10. CLI Pipeline
+Location
+cli/pipeline_cli.py
+Purpose
+Run the full pipeline from the terminal.
+---
+## CLI Commands
+### Fetch data
+python pipeline_cli.py fetch
+### Process data
+python pipeline_cli.py process
+
+
+### Load database
+python pipeline_cli.py load
+### Run analytics
+python pipeline_cli.py analyze
+### Generate report
+python pipeline_cli.py report
+### Run full pipeline
+python pipeline_cli.py run-all
+---
+# 11. Main Pipeline Flow
+Full workflow
+main.py
+Pipeline steps
+1 Fetch data
+2 Clean data
+3 Validate data
+4 Create features
+5 Load to database
+6 Run analytics
+7 Generate report
+Pseudo pipeline
+raw_data = fetch_market_data()
+clean_data = clean_market_data(raw_data)
+validate_market_data(clean_data)
+features = create_features(clean_data)
+load_market_data(features)
+analytics_results = run_analytics()
+generate_report(analytics_results)
+---
+# 12. Logging
+Add logging across modules.
+Example
+logging.info("Fetching market data")
+logging.warning("Missing values detected")
+logging.error("Database connection failed")
+---
+# 13. Testing
+Create tests for
+data cleaning
+feature engineering
+analytics calculations
+Use
+
+
+pytest
+---
+# 14. README
+README should explain:
+project architecture
+how to run pipeline
+how to run CLI commands
+sample output
+---
+# 15. Expected Final Output
+Running
+python pipeline_cli.py run-all
+Should produce:
+1 Database populated with financial data  
+2 Analytics results  
+3 Charts  
+4 PDF research report
+Example output folder
+reports/
+research_report.pdf
+price_chart.png
+correlation_heatmap.png
+volatility_chart.png
+---
+# What this project demonstrates to recruiters
+It proves ability in:
+- Python data engineering
+- Pandas analytics
+- automated pipelines
+- financial analytics
+- reproducible research systems
+This aligns almost perfectly with the **Research Data Strats role** requirements.
+---
+If you want, I can also show you **3 advanced extensions that would make this project look like something built by a quant team at Morgan Stanley** (these additions dramatically increase interview chances).
